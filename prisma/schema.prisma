@@ -1,0 +1,100 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(BUYER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  businesses Business[] // Businesses owned by this user (Seller)
+  orders     Order[]    // Orders placed by this user (Buyer)
+}
+
+enum Role {
+  SELLER
+  BUYER
+}
+
+model Business {
+  id          String   @id @default(uuid())
+  slug        String   @unique // For the storefront URL
+  name        String
+  description String?
+  city        String?
+  country     String?
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+  orders   Order[]
+
+  @@index([slug])
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  businessId  String
+  business    Business @relation(fields: [businessId], references: [id])
+  name        String
+  description String?
+  price       Float
+  category    String?
+  imageUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([businessId])
+}
+
+model Order {
+  id         String   @id @default(uuid())
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id])
+  buyerId    String?
+  buyer      User?    @relation(fields: [buyerId], references: [id])
+  status     OrderStatus @default(PENDING)
+  totalAmount Float
+  customerName String?
+  customerPhone String?
+  address    String?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  items OrderItem[]
+
+  @@index([businessId])
+  @@index([buyerId])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELLED
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  priceAtTime Float  // Snapshot of price when order was placed
+
+  @@index([orderId])
+}

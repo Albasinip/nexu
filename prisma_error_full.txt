@@ -1,0 +1,8 @@
+{
+  "stack": "PrismaClientKnownRequestError: \nInvalid `prisma.user.findFirst()` invocation in\nD:\\nexu-saas\\test-prisma-exact.ts:6:36\n\n  3 \n  4 async function main() {\n  5   try {\n→ 6     const user = await prisma.user.findFirst(\n\n    at Gr.handleRequestError (D:\\nexu-saas\\node_modules\\@prisma\\client\\src\\runtime\\RequestHandler.ts:237:13)\n    at Gr.handleAndLogRequestError (D:\\nexu-saas\\node_modules\\@prisma\\client\\src\\runtime\\RequestHandler.ts:183:12)\n    at Gr.request (D:\\nexu-saas\\node_modules\\@prisma\\client\\src\\runtime\\RequestHandler.ts:152:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async a (D:\\nexu-saas\\node_modules\\@prisma\\client\\src\\runtime\\getPrismaClient.ts:938:24)\n    at async main (D:\\nexu-saas\\test-prisma-exact.ts:6:18)",
+  "message": "\nInvalid `prisma.user.findFirst()` invocation in\nD:\\nexu-saas\\test-prisma-exact.ts:6:36\n\n  3 \n  4 async function main() {\n  5   try {\n→ 6     const user = await prisma.user.findFirst(\n",
+  "code": "ECONNREFUSED",
+  "meta": {},
+  "clientVersion": "7.5.0",
+  "name": "PrismaClientKnownRequestError"
+}
