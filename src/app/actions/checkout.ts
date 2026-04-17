@@ -6,6 +6,7 @@ import { storefrontService } from '@/core/storefront/storefront.service';
 
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
+import { Product } from '@/types';
 
 export async function submitOrderAction(slug: string, rawData: unknown) {
   // 0. Extraer buyer autologged y asegurar que EXISTA en la BD local de Prisma
@@ -70,7 +71,7 @@ export async function getCrossSellSuggestions(businessId: string, currentCategor
     // Palabras clave atractivas para acompañantes (bebidas, postres, extras)
     const addonKeywords = ['bebida', 'dulce', 'postre', 'extra', 'adicional', 'salsa', 'snack', 'papas', 'refresco'];
     
-    let scoredProducts = products.map(p => {
+    let scoredProducts = products.map((p: Product) => {
        const cat = (p.category || '').toLowerCase();
        const name = p.name.toLowerCase();
        let score = 0;
