@@ -7,7 +7,7 @@ import { storefrontService } from '@/core/storefront/storefront.service';
 import { createClient } from '@/utils/supabase/server';
 import { prisma } from '@/lib/prisma';
 
-export async function submitOrderAction(slug: string, rawData: any) {
+export async function submitOrderAction(slug: string, rawData: unknown) {
   // 0. Extraer buyer autologged y asegurar que EXISTA en la BD local de Prisma
   const { cookies } = await import("next/headers");
   const cookieStore = await cookies();
@@ -31,7 +31,7 @@ export async function submitOrderAction(slug: string, rawData: any) {
           }
         });
         buyerId = rescuedUser.id;
-      } catch (e) {
+      } catch {
         buyerId = undefined; // Fallback a guest si falla
       }
     }
@@ -96,7 +96,7 @@ export async function getCrossSellSuggestions(businessId: string, currentCategor
     scoredProducts = scoredProducts.sort((a,b) => b.score - a.score);
 
     return { success: true, data: scoredProducts.map(sp => sp.product).slice(0, 4) };
-  } catch (err) {
+  } catch {
     return { success: false, data: [] };
   }
 }

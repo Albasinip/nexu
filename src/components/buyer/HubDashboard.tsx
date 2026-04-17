@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { formatCurrency } from "@/utils/formatters";
 import { buyerLogoutAction } from "@/app/actions/buyerAuth";
 import { useCart } from "./CartContext";
@@ -90,10 +92,17 @@ export default function HubDashboard({ user, orders, stores }: HubDashboardProps
 
         {/* ── TOPBAR ─────────────────────────────────────────── */}
         <header className="hub-topbar">
-          <a href="/" className="hub-brand">
-            <img src="/logo.png" alt="NEXU" className="hub-brand-logo" />
+          <Link href="/" className="hub-brand">
+            <Image 
+              src="/logo.png" 
+              alt="NEXU" 
+              width={140} 
+              height={110} 
+              className="hub-brand-logo" 
+              priority
+            />
             <span className="hub-brand-name">Customer Hub</span>
-          </a>
+          </Link>
 
           <div className="hub-topbar-right">
             {isHydrated && itemCount > 0 && activeCartSlug && (

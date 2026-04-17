@@ -14,9 +14,10 @@ export const storefrontService = {
         orderBy: { name: 'asc' }
       });
 
-      return { success: true, data: dbBusinesses };
-    } catch (e: any) {
-      return { success: false, error: e.message };
+      return { success: true, data: dbBusinesses as Partial<Business>[] };
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Error desconocido';
+      return { success: false, error: message };
     }
   },
 
@@ -52,8 +53,9 @@ export const storefrontService = {
       };
 
       return { success: true, data: { business, products: dbBusiness.products as Product[] } };
-    } catch (e: any) {
-      return { success: false, error: e.message };
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : 'Error desconocido';
+      return { success: false, error: message };
     }
   }
 };

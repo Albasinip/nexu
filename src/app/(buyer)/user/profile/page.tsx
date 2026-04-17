@@ -91,7 +91,7 @@ async function getBuyerSessionData() {
     email: dbUser?.email || user.email || "",
   };
 
-  const mappedOrders: BuyerHubOrder[] = (orders as any[]).map((order: any) => ({
+  const mappedOrders: BuyerHubOrder[] = orders.map((order) => ({
     id: order.id,
     status: order.status,
     totalAmount: order.totalAmount,
@@ -99,7 +99,7 @@ async function getBuyerSessionData() {
     business: {
       name: order.business.name,
     },
-    items: (order.items as any[]).map((item: any) => ({
+    items: order.items.map((item) => ({
       id: item.id,
       quantity: item.quantity,
       product: {

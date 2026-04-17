@@ -57,6 +57,19 @@ export interface OrderItem {
   priceAtTime: number;
 }
 
+export interface OrderItemWithProduct extends OrderItem {
+  product: Pick<Product, 'name'>;
+}
+
+export interface OrderWithDetails extends Order {
+  customerName: string | null;
+  customerPhone: string | null;
+  address: string | null;
+  notes: string | null;
+  buyer?: Pick<User, 'name' | 'email'>;
+  items: OrderItemWithProduct[];
+}
+
 // Tipo preparado para el futuro módulo de Clientes
 export interface Customer {
   id: string;

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 
-export function PromoPopup({ slug }: { slug: string }) {
+export function PromoPopup({ }: { slug: string }) {
   const [show, setShow] = useState(false);
   const [couponCode, setCouponCode] = useState("");
   const [copied, setCopied] = useState(false);
@@ -13,12 +13,11 @@ export function PromoPopup({ slug }: { slug: string }) {
     const hasSeen = localStorage.getItem(key);
     
     if (!hasSeen) {
-      // Generar código dinámico único (ej: DTO-A3X9B)
-      const randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
-      setCouponCode(`NEXU10-${randomCode}`);
-
       // Retrasar 2 segundos para no agobiar inmediatamente a que carga
       const timer = setTimeout(() => {
+        // Generar código dinámico único (ej: DTO-A3X9B)
+        const randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
+        setCouponCode(`NEXU10-${randomCode}`);
         setShow(true);
       }, 2000);
       return () => clearTimeout(timer);

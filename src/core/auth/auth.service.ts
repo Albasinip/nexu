@@ -34,17 +34,12 @@ function fail<T = never>(error: string, status?: number): ServiceResult<T> {
   return { success: false, error, ...(status ? { status } : {}) };
 }
 
-function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return error.message;
-  return "Error interno del servidor";
-}
-
-function validateSupabaseConfig(): ServiceResult<any> | null {
+function validateSupabaseConfig(): string | null {
   if (
     !process.env.NEXT_PUBLIC_SUPABASE_URL ||
     !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
   ) {
-    return fail("Error de configuración del servidor");
+    return "Error de configuración del servidor";
   }
   return null;
 }
@@ -53,17 +48,6 @@ async function getSupabaseClient() {
   const { cookies } = await import("next/headers");
   const cookieStore = await cookies();
   return createClient(cookieStore);
-}
-
-function generateSlugFromEmail(email: string): string {
-  const base = email
-    .split("@")[0]
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "")
-    .slice(0, 20);
-
-  const suffix = Math.floor(Math.random() * 1000);
-  return `${base || "negocio"}-${suffix}`;
 }
 
 async function syncUser(params: {
@@ -89,11 +73,10 @@ async function syncUser(params: {
 async function createBusiness(params: {
   ownerId: string;
   ownerName: string;
-  ownerEmail: string;
   businessName?: string;
   city?: string;
 }) {
-  const { ownerId, ownerName, ownerEmail, businessName, city } = params;
+  const { ownerId, ownerName, businessName, city } = params;
   
   const finalName = businessName || `${ownerName}'s Business`;
   const baseSlug = finalName.toLowerCase().replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
@@ -121,7 +104,7 @@ async function handleSignup(
   role: AuthUserRole
 ): Promise<ServiceResult<SignupResult>> {
   const configError = validateSupabaseConfig();
-  if (configError) return configError;
+  if (configError) return fail(configError);
 
   const supabase = await getSupabaseClient();
 
@@ -152,7 +135,6 @@ async function handleSignup(
       await createBusiness({
         ownerId: user.id,
         ownerName: name,
-        ownerEmail: user.email!,
         businessName: data.businessName,
         city: data.city,
       });
@@ -184,7 +166,7 @@ async function handleSignup(
 export const authService = {
   async login(data: LoginDTO): Promise<ServiceResult<LoginResult>> {
     const configError = validateSupabaseConfig();
-    if (configError) return configError;
+    if (configError) return fail(configError);
 
     const supabase = await getSupabaseClient();
 

@@ -1,4 +1,5 @@
 import { createProductAction } from '@/app/actions/products';
+import Link from 'next/link';
 
 export default async function NewProductPage({
   searchParams,
@@ -81,7 +82,7 @@ export default async function NewProductPage({
         </div>
 
         <div style={{ marginTop: "1rem", display: "flex", gap: "1rem", justifyContent: "flex-end" }}>
-          <a href="/dashboard/products" style={{ padding: "0.75rem 1.5rem", color: "var(--color-text-main)", fontWeight: 600, textDecoration: "none" }}>Cancelar</a>
+          <Link href="/dashboard/products" style={{ padding: "0.75rem 1.5rem", color: "var(--color-text-main)", fontWeight: 600, textDecoration: "none" }}>Cancelar</Link>
           <button type="submit" style={{ padding: "0.75rem 1.5rem", background: "var(--color-primary)", color: "white", border: "none", borderRadius: "0.5rem", fontWeight: 600, cursor: "pointer" }}>
             Guardar Producto
           </button>

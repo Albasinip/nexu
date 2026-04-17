@@ -112,8 +112,8 @@ export const productsService = {
     try {
       const product = await findTenantProduct(businessId, productId);
       return ok(product);
-    } catch (error: any) {
-      if (error.message === 'NOT_FOUND') return ok(null); // Esperado explícitamente si se consulta
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === 'NOT_FOUND') return ok(null); // Esperado explícitamente si se consulta
       return fail(getErrorMessage(error, 'Error al obtener los detalles del producto.'));
     }
   },

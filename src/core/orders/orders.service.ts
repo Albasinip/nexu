@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ServiceResult, Order } from "@/types";
+import { ServiceResult, Order, OrderWithDetails } from "@/types";
 import { CheckoutDTO } from "./orders.schema";
 
 /**
@@ -16,9 +16,9 @@ function fail<T = never>(error: string): ServiceResult<T> {
   return { success: false, error };
 }
 
-function getErrorMessage(error: unknown): string {
+function getErrorMessage(error: unknown, defaultMessage: string = "Error interno del servidor"): string {
   if (error instanceof Error) return error.message;
-  return "Error interno del servidor";
+  return defaultMessage;
 }
 
 function isValidId(value: string): boolean {
@@ -123,7 +123,7 @@ export const ordersService = {
   /**
    * Obtiene todos los pedidos de un local, ordenados del más reciente al más antiguo.
    */
-  async getBusinessOrders(businessId: string): Promise<ServiceResult<any[]>> {
+  async getBusinessOrders(businessId: string): Promise<ServiceResult<OrderWithDetails[]>> {
     if (!isValidId(businessId)) return fail("SECURITY_ERROR: businessId inválido");
 
     try {
@@ -137,7 +137,7 @@ export const ordersService = {
           buyer: { select: { name: true, email: true } }
         }
       });
-      return ok(dbOrders);
+      return ok(dbOrders as unknown as OrderWithDetails[]);
     } catch (error) {
       return fail(getErrorMessage(error));
     }

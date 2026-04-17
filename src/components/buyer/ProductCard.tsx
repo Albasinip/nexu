@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Product } from '@/types';
 import { useCart } from './CartContext';
 import { formatCurrency } from '@/utils/formatters';
@@ -36,10 +37,11 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Image + Add button */}
       <div className="sf-pcard-img-wrap">
         {product.imageUrl ? (
-          <img
+          <Image
             src={product.imageUrl}
             alt={product.name}
-            className="sf-pcard-img"
+            fill
+            style={{ objectFit: "cover" }}
           />
         ) : (
           <span className="sf-pcard-placeholder">🍽️</span>

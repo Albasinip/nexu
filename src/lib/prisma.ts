@@ -27,7 +27,7 @@ if (connectionString) {
     const url = new URL(connectionString)
     poolConfig = {
       ...poolConfig,
-      // @ts-ignore - Sobrescribimos con valores explícitos si el parseo es exitoso
+      // @ts-expect-error - Sobrescribimos con valores explícitos si el parseo es exitoso
       user: decodeURIComponent(url.username),
       password: decodeURIComponent(url.password),
       host: url.hostname,

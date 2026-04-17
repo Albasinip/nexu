@@ -41,8 +41,9 @@ export async function updateBusinessProfile(businessId: string, formData: FormDa
     revalidatePath(`/store/${business.slug}`)
     
     return { success: true }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error updating business profile:', error)
-    return { success: false, error: error.message || 'Error al actualizar el perfil.' }
+    const message = error instanceof Error ? error.message : 'Error al actualizar el perfil.'
+    return { success: false, error: message }
   }
 }

@@ -73,7 +73,6 @@ export default async function StorefrontLayout({
           user={
             user
               ? {
-                id: user.id,
                 name: dbUser?.name || user.user_metadata?.name || "Cliente",
               }
               : null
@@ -131,7 +130,7 @@ export default async function StorefrontLayout({
 
           <main className="storefront-main">{children}</main>
 
-          <CartIndicator slug={slug} />
+          <CartIndicator />
         </div>
       </CartProvider>
     </AuthDrawerProvider>

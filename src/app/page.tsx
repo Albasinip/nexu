@@ -2,30 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 
-function FeatureCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <article className="glass-premium group relative overflow-hidden rounded-[2rem] p-8 transition-all duration-500 hover:-translate-y-2">
-      <div className="absolute -right-4 -top-4 h-32 w-32 rounded-full bg-primary/5 blur-3xl opacity-0 transition-opacity group-hover:opacity-100" />
-      <div className="relative z-10">
-        <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-primary shadow-inner">
-          {icon}
-        </div>
-        <h3 className="mb-3 text-xl font-bold tracking-tight text-white/95">
-          {title}
-        </h3>
-        <p className="text-[0.95rem] leading-relaxed text-white/50">{description}</p>
-      </div>
-    </article>
-  );
-}
 
 function SectionBadge({ children }: { children: React.ReactNode }) {
   return (

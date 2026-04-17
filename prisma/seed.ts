@@ -34,7 +34,7 @@ async function main() {
     }
   });
 
-  const b3 = await prisma.business.create({
+  await prisma.business.create({
     data: {
       slug: 'sushi-zen',
       name: 'Sushi Zen',

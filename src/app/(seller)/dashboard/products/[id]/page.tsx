@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { tenantService } from '@/core/tenant/tenant.service';
 import { productsService } from '@/core/products/products.service';
 import { updateProductAction } from '@/app/actions/products';
+import Link from 'next/link';
 
 export default async function EditProductPage({
   params,
@@ -113,12 +114,12 @@ export default async function EditProductPage({
           <hr className="ds-divider" />
 
           <div className="ds-actions ds-actions-between">
-            <a
+            <Link
               href="/dashboard/products"
               className="ds-btn ds-btn-secondary"
             >
               Cancelar
-            </a>
+            </Link>
             <button type="submit" className="ds-btn ds-btn-primary">
               Guardar Cambios
             </button>

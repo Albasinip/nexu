@@ -1,0 +1,8 @@
+# Root JS files
+*.js
+# Scratch
+scratch/
+# Next.js
+.next/
+# Node
+node_modules/

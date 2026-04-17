@@ -1,4 +1,5 @@
 import { storefrontService } from "@/core/storefront/storefront.service";
+import Link from "next/link";
 import { ProductCard } from "@/components/buyer/ProductCard";
 import { PromoPopup } from "@/components/buyer/Conversion/PromoPopup";
 import { SmartWelcome } from "@/components/buyer/Conversion/SmartWelcome";
@@ -31,9 +32,9 @@ export default async function StorefrontPage({ params }: StorefrontPageProps) {
             <p className="sf-not-found-text">
               {store.error ?? "El negocio no está activo o fue removido del sistema."}
             </p>
-            <a href="/store" className="sf-btn sf-btn-primary">
+            <Link href="/store" className="sf-btn sf-btn-primary">
               Explorar otras tiendas
-            </a>
+            </Link>
           </div>
         </div>
       </>
@@ -51,9 +52,9 @@ export default async function StorefrontPage({ params }: StorefrontPageProps) {
             <p className="sf-not-found-text">
               Puede que el enlace esté incorrecto o el negocio ya no exista.
             </p>
-            <a href="/store" className="sf-btn sf-btn-primary">
+            <Link href="/store" className="sf-btn sf-btn-primary">
               Ver marketplace
-            </a>
+            </Link>
           </div>
         </div>
       </>

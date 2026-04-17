@@ -41,7 +41,6 @@ export async function updateSession(request: NextRequest) {
   const isDashboard = path.startsWith('/dashboard');
   const isSellerAuth = path === '/auth/login' || path === '/auth/register';
   
-  const isBuyerProfile = path.startsWith('/user/profile');
   const isBuyerAuth = path === '/user/login' || path === '/user/register';
 
   if (user) {

@@ -4,7 +4,7 @@ import React from 'react';
 import { useCart } from './CartContext';
 import { formatCurrency } from '@/utils/formatters';
 
-export function CartIndicator({ slug }: { slug: string }) {
+export function CartIndicator() {
   const { itemCount, cartTotal, isHydrated, openCart } = useCart();
   
   if (!isHydrated || itemCount === 0) return null;

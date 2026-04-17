@@ -1,41 +1,41 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { useCart } from '../CartContext';
 import { formatCurrency } from '@/utils/formatters';
+import { Product } from '@/types';
 import { getCrossSellSuggestions } from '@/app/actions/checkout';
 
-export function CrossSellSection({ businessId }: { businessId?: string }) {
+interface CrossSellSectionProps {
+  businessId: string;
+}
+
+export function CrossSellSection({ businessId }: CrossSellSectionProps) {
   const { items, addItem } = useCart();
-  const [crossSellProducts, setCrossSellProducts] = useState<any[]>([]);
+  const [availableToSuggest, setAvailableToSuggest] = useState<Product[]>([]);
 
-  // Usaremos el ID del primer producto del carrito para asegurar pertenencia
-  const inferredBusinessId = items[0]?.businessId || businessId || 'demo';
-
-  // Extraer string estable de categorías para inyectar al Server Action sin causar render loops
-  const cartCategoriesStr = Array.from(new Set(items.map(i => i.category || ''))).filter(Boolean).join(',');
-
-  useEffect(() => {
-    if (inferredBusinessId !== 'demo' && crossSellProducts.length === 0) {
-      getCrossSellSuggestions(inferredBusinessId, cartCategoriesStr.split(',')).then(res => {
-        if (res.success && res.data) {
-          setCrossSellProducts(res.data);
-        }
-      });
+  React.useEffect(() => {
+    async function load() {
+      const currentCats = Array.from(new Set(items.map(i => i.category || ''))).filter(Boolean);
+      const res = await getCrossSellSuggestions(businessId, currentCats);
+      if (res.success && res.data) {
+        // Filtramos para no sugerir algo que ya está en el carrito
+        const filtered = res.data.filter(
+          csp => !items.some(item => item.id === csp.id)
+        );
+        setAvailableToSuggest(filtered);
+      }
     }
-  }, [inferredBusinessId, cartCategoriesStr, crossSellProducts.length]);
-
-  if (items.length === 0 || crossSellProducts.length === 0) return null;
-
-  // Filtramos para no sugerir algo que ya está en el carrito
-  const availableToSuggest = crossSellProducts.filter(
-    csp => !items.some(item => item.id === csp.id)
-  );
+    if (businessId) {
+      load();
+    }
+  }, [businessId, items]);
 
   if (availableToSuggest.length === 0) return null;
 
   return (
-    <div style={{ background: "var(--color-background)", padding: "1.25rem", borderTop: "1px solid var(--color-border)", borderBottom: "1px solid var(--color-border)", marginBottom: "1.5rem" }}>
+    <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
       <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
          <span style={{ fontSize: "1.2rem", background: "var(--color-primary-soft)", color: "var(--color-primary)", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%" }}>💡</span>
          <h3 style={{ fontSize: "1rem", fontWeight: 800, margin: 0, color: "var(--color-text-main)" }}>Completa tu pedido</h3>
@@ -46,7 +46,7 @@ export function CrossSellSection({ businessId }: { businessId?: string }) {
           <div key={mockProduct.id} style={{ minWidth: "140px", width: "140px", background: "var(--color-surface)", borderRadius: "1rem", border: "1px solid var(--color-border)", overflow: "hidden", display: "flex", flexDirection: "column", boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
             <div style={{ height: "80px", width: "100%", background: "var(--color-surface-dim)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
                {mockProduct.imageUrl ? (
-                  <img src={mockProduct.imageUrl} alt={mockProduct.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <Image src={mockProduct.imageUrl} alt={mockProduct.name} fill style={{ objectFit: "cover" }} />
                ) : (
                   <span style={{ fontSize: "2rem" }}>🥫</span>
                )}
@@ -56,9 +56,8 @@ export function CrossSellSection({ businessId }: { businessId?: string }) {
               <span style={{ fontSize: "0.85rem", color: "var(--color-primary)", fontWeight: 700 }}>{formatCurrency(mockProduct.price)}</span>
             </div>
             <button 
-              onClick={(e) => { e.preventDefault(); addItem(mockProduct as any); }}
-              className="hover-lift"
-              style={{ margin: "0.5rem", padding: "0.4rem", border: "none", background: "var(--color-primary-soft)", color: "var(--color-primary)", fontWeight: 800, borderRadius: "0.5rem", cursor: "pointer", fontSize: "0.85rem", transition: "all 0.2s" }}
+              onClick={(e) => { e.preventDefault(); addItem(mockProduct); }}
+              style={{ padding: "0.5rem", background: "var(--color-primary-soft)", color: "var(--color-primary-strong)", border: "none", borderTop: "1px solid var(--color-border)", cursor: "pointer", fontWeight: 700, fontSize: "0.8rem", width: "100%" }}
             >
               + Agregar
             </button>

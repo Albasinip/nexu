@@ -8,7 +8,7 @@ import { submitOrderAction } from '@/app/actions/checkout';
 import { useRouter } from 'next/navigation';
 import { CrossSellSection } from './Conversion/CrossSellSection';
 
-export function CartDrawer({ slug, user }: { slug: string; user?: any }) {
+export function CartDrawer({ slug, user }: { slug: string; user?: { name?: string | null } | null }) {
   const { isCartOpen, closeCart, items, cartTotal, removeItem, updateQuantity, clearCart } = useCart();
   const { openAuthDrawer } = useAuthDrawer();
   const router = useRouter();

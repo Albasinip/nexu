@@ -6,7 +6,7 @@ import { featureFlags } from "@/config/featureFlags";
  * Mock DB en memoria para desarrollo.
  * Conserva estado mientras el dev server siga activo.
  */
-let mockCustomersDb: Customer[] = [];
+const mockCustomersDb: Customer[] = [];
 
 /**
  * ==============================

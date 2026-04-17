@@ -30,10 +30,18 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem('nexu_cart');
     let initialItems = [];
     if (saved) {
-      try { initialItems = JSON.parse(saved); } catch (e) {}
+      try { 
+        initialItems = JSON.parse(saved); 
+      } catch {
+        // Ignorar errores de parseo
+      }
     }
-    setItems(initialItems);
-    setIsHydrated(true);
+    
+    // Diferir la actualización para evitar el warning de setState sincronizado en un effect
+    setTimeout(() => {
+      setItems(initialItems);
+      setIsHydrated(true);
+    }, 0);
   }, []);
 
   useEffect(() => {

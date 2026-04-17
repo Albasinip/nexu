@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import { updateOrderStatusAction } from '@/app/actions/orders';
 import { formatCurrency } from '@/utils/formatters';
+import { OrderStatus, OrderWithDetails } from '@/types';
 
-type OrderStatus = "PENDING" | "PROCESSING" | "COMPLETED" | "CANCELLED";
-
-export function OrderManager({ initialOrders }: { initialOrders: any[] }) {
+export function OrderManager({ initialOrders }: { initialOrders: OrderWithDetails[] }) {
   const [orders, setOrders] = useState(initialOrders);
   const [loadingId, setLoadingId] = useState<string | null>(null);
 
@@ -34,7 +33,7 @@ export function OrderManager({ initialOrders }: { initialOrders: any[] }) {
     }
   };
 
-  const OrderCard = ({ order }: { order: any }) => (
+  const OrderCard = ({ order }: { order: OrderWithDetails }) => (
     <div className="card" style={{ marginBottom: "1rem", opacity: loadingId === order.id ? 0.6 : 1 }}>
        <div className="card-body">
          <div style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--color-border)", paddingBottom: "1rem", marginBottom: "1rem" }}>
@@ -58,7 +57,7 @@ export function OrderManager({ initialOrders }: { initialOrders: any[] }) {
             <div>
               <p style={{ margin: "0 0 0.35rem 0", fontSize: "0.75rem", fontWeight: 800, color: "var(--color-text-faint)", letterSpacing: "0.06em", textTransform: "uppercase" }}>Ubicación / Notas</p>
               <p style={{ margin: 0, fontWeight: 700, fontSize: "0.9rem", color: "var(--color-text-main)" }}>{order.address || 'Retiro en Local'}</p>
-              {order.notes && <p style={{ margin: "0.35rem 0 0 0", fontSize: "0.85rem", fontStyle: "italic", color: "var(--color-text-muted)" }}>"{order.notes}"</p>}
+              {order.notes && <p style={{ margin: "0.35rem 0 0 0", fontSize: "0.85rem", fontStyle: "italic", color: "var(--color-text-muted)" }}>&ldquo;{order.notes}&rdquo;</p>}
             </div>
          </div>
 
@@ -66,7 +65,7 @@ export function OrderManager({ initialOrders }: { initialOrders: any[] }) {
          <div style={{ marginBottom: "1.5rem" }}>
             <p style={{ margin: "0 0 0.5rem 0", fontSize: "0.75rem", fontWeight: 800, color: "var(--color-text-faint)", letterSpacing: "0.06em", textTransform: "uppercase" }}>Pedido</p>
             <ul style={{ margin: 0, paddingLeft: "1.5rem", color: "var(--color-text-soft)", fontSize: "0.95rem" }}>
-              {order.items.map((it: any) => (
+              {order.items.map((it) => (
                  <li key={it.id} style={{ marginBottom: "0.25rem" }}>
                    <span style={{ fontWeight: 800, color: "var(--color-text-main)" }}>{it.quantity}x</span> {it.product.name}
                  </li>

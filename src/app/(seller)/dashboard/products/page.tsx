@@ -3,6 +3,7 @@ import { productsService } from '@/core/products/products.service';
 import { formatCurrency } from '@/utils/formatters';
 import { deleteProductAction, toggleProductStatusAction } from '@/app/actions/products';
 import { ConfirmSubmitButton } from '@/components/ConfirmSubmitButton';
+import Link from 'next/link';
 
 export default async function ProductsPage() {
   const tenant = await tenantService.requireCurrentTenant();
@@ -22,12 +23,12 @@ export default async function ProductsPage() {
           <p style={{ color: "var(--color-text-muted)" }}>Catálogo perteneciente a {tenant.business.name}</p>
         </div>
         
-        <a 
+        <Link 
           href="/dashboard/products/new" 
           style={{ background: "var(--color-primary)", color: "white", padding: "0.5rem 1rem", borderRadius: "0.5rem", fontWeight: 600, textDecoration: "none" }}
         >
           + Crear Producto
-        </a>
+        </Link>
       </div>
 
       <div style={{ background: "var(--color-surface)", borderRadius: "1rem", border: "1px solid var(--color-border)", overflow: "hidden" }}>
@@ -67,9 +68,9 @@ export default async function ProductsPage() {
                     </form>
 
                     {/* Botón Editar */}
-                    <a href={`/dashboard/products/${p.id}`} style={{ padding: "0.4rem 0.6rem", background: "var(--color-primary-soft)", color: "var(--color-primary-strong)", borderRadius: "0.25rem", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
+                    <Link href={`/dashboard/products/${p.id}`} style={{ padding: "0.4rem 0.6rem", background: "var(--color-primary-soft)", color: "var(--color-primary-strong)", borderRadius: "0.25rem", textDecoration: "none", fontSize: "0.8rem", fontWeight: 600 }}>
                       Editar
-                    </a>
+                    </Link>
                     
                     {/* Botón Borrar (Client-side warning en un tag nativo no siempre detiene Next action, pero lo emulamos limipuo aquí) */}
                     <form action={deleteProductAction}>
